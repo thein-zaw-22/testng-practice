@@ -1,0 +1,28 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# Build
+target/
+bin/
+out/
+*.class
+*.jar
+*.war
+*.ear
+
+# Dependencies
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven
+.m2/
