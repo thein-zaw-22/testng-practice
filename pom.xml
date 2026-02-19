@@ -128,9 +128,7 @@
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
+                    <!-- Removed AspectJ javaagent to avoid Unsupported class file major version warnings on Java 25 -->
                 </configuration>
             </plugin>
 

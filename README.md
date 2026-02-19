@@ -2,6 +2,16 @@
 
 A comprehensive Maven-based TestNG project with Selenium WebDriver for E2E testing. Configured for JDK 25 with the latest dependencies.
 
+## 🔄 How the Testing Process Works
+
+Here is the simple flow from running a command to getting the final report:
+
+1. **Trigger**: You run `mvn test` in the terminal.
+2. **Setup**: Maven builds the project and TestNG starts the test suite.
+3. **Execution**: The browser opens automatically. Tests interact with the website (clicking, typing) just like a real user.
+4. **Recording**: The **Allure Listener** records every step. If a test fails, it automatically saves a screenshot.
+5. **Reporting**: You run `allure generate`. This converts the raw data into a beautiful HTML dashboard to view results.
+
 ## Project Structure
 
 ```
@@ -267,6 +277,8 @@ mvn surefire-report:report
 ```
 
 ### Allure Report (Advanced Test Reporting)
+
+Note: the AspectJ `javaagent` was removed from the Maven Surefire configuration because current AspectJ/ASM releases do not support Java 25 (class file major version 69). The project still produces Allure results via the TestNG listener and the Allure CLI; re-enable or re-add the agent only when a compatible AspectJ release is available.
 
 Allure provides beautiful, interactive test reports with comprehensive insights into test execution.
 
