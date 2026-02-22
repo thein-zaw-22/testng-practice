@@ -5,12 +5,12 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.testng.practice</groupId>
+    <groupId>com.testexpert.java</groupId>
     <artifactId>testng-practice</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>TestNG Practice</name>
+    <name>Java Testing</name>
     <description>Maven project with TestNG configuration for JDK 25</description>
 
     <properties>
@@ -18,12 +18,15 @@
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <testng.version>7.10.2</testng.version>
+        <junit.jupiter.version>5.11.3</junit.jupiter.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <selenium.version>4.25.0</selenium.version>
         <webdrivermanager.version>5.9.1</webdrivermanager.version>
         <allure.version>2.25.0</allure.version>
         <aspectj.version>1.9.22</aspectj.version>
+        <jmeter.maven.plugin.version>3.8.0</jmeter.maven.plugin.version>
+        <jmeter.version>5.6.3</jmeter.version>
     </properties>
 
     <dependencies>
@@ -32,6 +35,12 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -122,13 +131,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
                 <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
-                    <!-- Removed AspectJ javaagent to avoid Unsupported class file major version warnings on Java 25 -->
                 </configuration>
             </plugin>
 
@@ -154,4 +159,91 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>testng</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven.surefire.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.maven.surefire</groupId>
+                                <artifactId>surefire-testng</artifactId>
+                                <version>${maven.surefire.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>testng.xml</suiteXmlFile>
+                            </suiteXmlFiles>
+                            <systemPropertyVariables>
+                                <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>junit</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven.surefire.version}</version>
+                        <configuration>
+                            <suiteXmlFiles combine.self="override"/>
+                            <includes>
+                                <include>**/*JunitTest.java</include>
+                            </includes>
+                            <systemPropertyVariables>
+                                <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jmeter</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.lazerycode.jmeter</groupId>
+                        <artifactId>jmeter-maven-plugin</artifactId>
+                        <version>${jmeter.maven.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>configuration</id>
+                                <goals>
+                                    <goal>configure</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>jmeter-tests</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>jmeter</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <testFilesDirectory>${project.basedir}/src/test/jmeter</testFilesDirectory>
+                            <resultsFileFormat>xml</resultsFileFormat>
+                            <jmeterVersion>${jmeter.version}</jmeterVersion>
+                            <ignoreResultFailures>false</ignoreResultFailures>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

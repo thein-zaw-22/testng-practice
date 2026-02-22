@@ -1,6 +1,13 @@
 # TestNG Practice Project
 
-A comprehensive Maven-based TestNG project with Selenium WebDriver for E2E testing. Configured for JDK 25 with the latest dependencies.
+A comprehensive Maven-based testing project with TestNG, JUnit 5, Selenium WebDriver, and JMeter. Configured for JDK 25.
+
+## Documentation
+
+- `docs/README.md` - Documentation index
+- `docs/JMETER_GUIDELINE.md` - JMeter GUI practice guide
+- `docs/PROJECT_STRUCTURE.md` - Project package/folder layout
+- `docs/SELENIUM_WAITS_GUIDE.md` - Selenium waits reference
 
 ## 🔄 How the Testing Process Works
 
@@ -24,8 +31,11 @@ testng-practice/
 │   │   └── java/                        # Main source code
 │   └── test/
 │       ├── java/
-│       │   └── com/testng/practice/
-│       │       ├── SampleTest.java      # Sample unit tests
+│       │   └── com/testexpert/java/
+│       │       ├── SampleTest.java      # Sample TestNG lifecycle tests
+│       │       ├── junit/
+│       │       │   ├── CalculatorJunitTest.java   # Sample JUnit 5 tests
+│       │       │   └── StringUtilsJunitTest.java  # Sample JUnit 5 tests
 │       │       └── e2e/
 │       │           ├── base/
 │       │           │   └── BaseTest.java          # WebDriver setup/teardown
@@ -33,6 +43,9 @@ testng-practice/
 │       │           │   ├── LoginPage.java        # Login page object (all locators)
 │       │           │   └── ProductsPage.java     # Products page object
 │       │           └── SeleniumLocatorsTest.java # E2E test cases
+│       ├── jmeter/
+│       │   ├── learning-basics.jmx      # Sample JMeter plan
+│       │   └── test-google.jmx          # Additional JMeter sample plan
 │       └── resources/
 │           └── selenium.properties     # Selenium configuration
 ├── config/                              # Configuration files
@@ -48,33 +61,40 @@ testng-practice/
 
 ### Dependencies
 - **TestNG**: 7.10.2 (latest)
+- **JUnit Jupiter**: 5.11.3 (learning profile)
 - **Selenium WebDriver**: 4.25.0 (latest)
 - **WebDriver Manager**: 5.9.1 (automatic driver management)
 - **SLF4J**: 2.0.12
 - **Allure TestNG**: 2.25.0 (test reporting with listener)
 - **AspectJ Weaver**: 1.9.22 (Allure instrumentation)
 - **Maven Surefire Plugin**: 3.2.5 (test execution + Allure listener)
+- **JMeter Maven Plugin**: 3.8.0 (performance test execution)
 
 ## Running Tests
 
-### Run all tests (unit + E2E)
+### Run all tests with TestNG suite (default profile)
 ```bash
 mvn test
 ```
 
-### Run only unit tests
+### Run TestNG explicitly
 ```bash
-mvn test -Dtest=SampleTest
+mvn test -Ptestng
 ```
 
-### Run only E2E Selenium tests
+### Run JUnit 5 learning tests
 ```bash
-mvn test -Dtest=SeleniumLocatorsSimplifiedTest
+mvn test -Pjunit
 ```
 
-### Run specific test method
+### Run one JUnit test class
 ```bash
-mvn test -Dtest=SeleniumLocatorsSimplifiedTest#testIdLocatorNavigation
+mvn test -Pjunit -Dtest=CalculatorJunitTest
+```
+
+### Run a custom TestNG suite file
+```bash
+mvn test -Ptestng -Dsurefire.suiteXmlFiles=path/to/your-suite.xml
 ```
 
 ### Run and Generate Surefire Report
@@ -110,6 +130,16 @@ mvn clean
 ### Full build and test
 ```bash
 mvn clean install
+```
+
+### Run JMeter plans (`*.jmx`) from `src/test/jmeter`
+```bash
+mvn verify -Pjmeter
+```
+
+### Run JMeter without re-running unit/UI tests
+```bash
+mvn verify -Pjmeter -DskipTests
 ```
 
 ## Selenium E2E Tests
@@ -199,6 +229,20 @@ The `SampleTest.java` class demonstrates the following TestNG annotations:
 - `@AfterTest` - Runs after each test tag
 - `@AfterSuite` - Runs once after all tests in the suite
 
+### JUnit 5 Learning Tests
+The JUnit tests demonstrate:
+- `@BeforeEach` setup behavior
+- `@Test` and `@DisplayName`
+- `assertThrows` for exception assertions
+- `@ParameterizedTest` + `@CsvSource`
+
+### JMeter Learning Plan
+The JMeter starter plans in `src/test/jmeter/` demonstrate:
+- Thread Group basics (users, ramp-up, loops)
+- HTTP Request sampler
+- Response assertion (status code 200)
+- Running performance checks from Maven with profile `jmeter`
+
 ### E2E Tests
 E2E tests demonstrate:
 - WebDriver initialization and management
@@ -257,6 +301,7 @@ Edit `src/test/resources/selenium.properties` to configure:
 - **Maven Failsafe Plugin** (3.2.5) - Integration tests
 - **Maven JAR Plugin** (3.4.2) - JAR creation
 - **Maven Clean Plugin** (3.3.2) - Clean build artifacts
+- **JMeter Maven Plugin** (3.8.0) - JMeter configure + execution during `verify`
 
 ## Test Reporting
 

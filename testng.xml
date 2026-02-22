@@ -7,20 +7,20 @@
     
     <test name="Unit Tests">
         <classes>
-            <class name="com.testng.practice.unit.CalculatorTest" />
-            <class name="com.testng.practice.unit.StringUtilsTest" />
+            <class name="com.testexpert.java.unit.CalculatorTest" />
+            <class name="com.testexpert.java.unit.StringUtilsTest" />
         </classes>
     </test>
     
     <test name="Integration Tests">
         <classes>
-            <class name="com.testng.practice.integration.CalculatorIntegrationTest" />
+            <class name="com.testexpert.java.integration.CalculatorIntegrationTest" />
         </classes>
     </test>
     
     <test name="E2E Selenium Locators Tests - Simplified">
         <classes>
-            <class name="com.testng.practice.e2e.SeleniumLocatorsSimplifiedTest" />
+            <class name="com.testexpert.java.e2e.SeleniumLocatorsSimplifiedTest" />
         </classes>
     </test>
     

@@ -3,14 +3,16 @@
 ## Folder Organization
 
 ### Source Code (`src/main/`)
-- **`java/com/testng/practice/app/`** - Main application classes (Calculator, Services, etc.)
-- **`java/com/testng/practice/utils/`** - Utility and helper classes (StringUtils, etc.)
+- **`java/com/testexpert/java/app/`** - Main application classes (Calculator, Services, etc.)
+- **`java/com/testexpert/java/utils/`** - Utility and helper classes (StringUtils, etc.)
 - **`resources/`** - Configuration files, properties, etc.
 
 ### Test Code (`src/test/`)
-- **`java/com/testng/practice/unit/`** - Unit tests (test individual classes)
-- **`java/com/testng/practice/integration/`** - Integration tests (test component interactions)
-- **`java/com/testng/practice/utils/`** - Test helpers and assertions (TestAssertions, fixtures, etc.)
+- **`java/com/testexpert/java/unit/`** - TestNG unit tests (test individual classes)
+- **`java/com/testexpert/java/integration/`** - Integration tests (test component interactions)
+- **`java/com/testexpert/java/junit/`** - JUnit 5 learning tests
+- **`java/com/testexpert/java/utils/`** - Test helpers and assertions (TestAssertions, fixtures, etc.)
+- **`jmeter/`** - JMeter test plans (e.g., `learning-basics.jmx`)
 - **`resources/`** - Test data, test configs, fixtures
 
 ### Configuration (`config/`)
@@ -36,11 +38,11 @@
 # Run all tests
 mvn test
 
-# Run only unit tests
-mvn test -Dtest=com.testng.practice.unit.*
+# Run JUnit 5 profile tests
+mvn test -Pjunit
 
-# Run only integration tests
-mvn test -Dtest=com.testng.practice.integration.*
+# Run JMeter profile
+mvn verify -Pjmeter
 
 # Run specific test class
 mvn test -Dtest=CalculatorTest
@@ -51,8 +53,10 @@ mvn surefire-report:report
 
 ## Adding New Tests
 
-1. **Unit Test**: Add to `src/test/java/com/testng/practice/unit/`
-2. **Integration Test**: Add to `src/test/java/com/testng/practice/integration/`
-3. **New App Class**: Add to `src/main/java/com/testng/practice/app/`
-4. **New Utility**: Add to `src/main/java/com/testng/practice/utils/`
-5. **Update** `testng.xml` with new test classes if needed
+1. **TestNG Unit Test**: Add to `src/test/java/com/testexpert/java/unit/`
+2. **JUnit 5 Test**: Add to `src/test/java/com/testexpert/java/junit/` and run with `-Pjunit`
+3. **Integration Test**: Add to `src/test/java/com/testexpert/java/integration/`
+4. **JMeter Plan**: Add `.jmx` to `src/test/jmeter/`
+5. **New App Class**: Add to `src/main/java/com/testexpert/java/app/`
+6. **New Utility**: Add to `src/main/java/com/testexpert/java/utils/`
+7. **Update** `testng.xml` with new test classes if needed
